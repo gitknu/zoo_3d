@@ -1,0 +1,791 @@
+<html>
+<head>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type="module" src="model-viewer.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+<style>
+ @import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Yanone+Kaffeesatz:wght@200..700&display=swap');
+ html, body {
+  margin: 0;
+font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -khtml-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none;
+	overflow-x: hidden;
+	 background: linear-gradient(to bottom, white 0%, white 90%, #9dff82 100%);
+}
+.gallery {
+  max-width: 90%;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.gallery-card {
+  flex: 1;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: flex 0.35s ease-in-out;
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.35s ease;
+}
+
+.gallery-card:hover {
+  flex: 2.25;
+}
+
+.gallery:has(.gallery-card:hover)
+.gallery-card:not(:hover) img {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+iframe {
+    height: 385px;
+    border-radius: 40px;
+}
+ #up_button, #down_button {
+    right:20px;
+	width:70px;
+	height:70px;
+        text-decoration: none;
+	position:fixed;
+        opacity: 0.7;
+	background-color:#f79d97;
+	color:black;
+	border-radius:50%;
+	text-align:center;
+	box-shadow: 3px 3px 4px black;
+	  display: flex;
+    justify-content: center;
+    align-items: center;
+     transition: all 0.4s ease-in-out;
+}
+#up_button:hover,
+#down_button:hover {
+    width: 65px;
+    height: 65px;
+    box-shadow: 1px 1px 2px black;
+    transition: all 0.4s ease-in-out, box-shadow 0.4s ease-in-out; 
+}
+#up_button:hover .button_icon,
+#down_button:hover .button_icon {
+    transform: scale(0.95);
+    transition: all 0.4s ease-in-out;
+}
+#up_button {
+	bottom:100px;
+}
+#down_button {
+	bottom:20px;
+}
+.button_icon {
+height: 45px;
+    transition: all 0.4s ease-in-out;
+}
+@media (max-width: 1367px) and (orientation: portrait) {
+.button_icon {
+height: 150px;
+}
+ #up_button, #down_button {
+    right:20px;
+	width:200px;
+	height:200px;
+}
+#up_button {
+	bottom:240px;
+}
+#down_button {
+	bottom:20px;
+}
+}  	
+model-viewer {
+    display: block;
+    margin: 5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(10, 10, 10, 0.5) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(0, 0, 0, 1) 100%);
+    touch-action: none;
+    width: 100px;
+    height: 100px;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 100px rgba(255, 255, 255, 0.2); 
+    perspective: 1000px; 
+    transform-style: preserve-3d;
+}
+#model-viewer-wrapper_1 {
+    display: block;
+}
+.model-viewer-wrapper {
+    display: none;
+    width: 100vw;
+    left: -120px;
+    top: 160px;
+}
+.container {
+  width: 320px;
+  margin: 100px auto 0 auto;
+  perspective: 1000px;
+}
+.carousel {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d; 
+  transition: transform 2.1s ease;
+}
+.carousel__face { 
+  border-radius:20px;
+  width: 300px;
+  height: 225px;
+  top: 20px;
+  left: 10px;
+  right: 10px;
+  background-size: cover;
+  box-shadow:
+  inset 0 0 0 2000px rgba(0,0,0,0.2), 
+  0 0 25px rgba(0, 0, 0, 0.5);
+  display: flex;
+  opacity: 0;
+}
+#carousel__face_10, #carousel__face_2 {
+      opacity: 0.4;
+      }
+#carousel__face_1 {
+      opacity: 1;
+}
+span {
+  margin: 10px;
+  font-size: 9px;
+}
+#rotateButton {
+  display: inline-block;
+  height: 75px;
+  margin: 2px 75px;
+  padding: 4px 0 0 10px;
+  background: -webkit-linear-gradient(
+    left,
+    #FDB0C0 0%,
+    #f5c4ce 30px,
+    #f5d3d9 50px,
+    #f5d7dd 100%
+  );
+  background: -moz-linear-gradient(
+    left,
+    #FDB0C0 0%,
+    #f5c4ce 30px,
+    #f5d3d9 50px,
+    #f5d7dd 100%
+  );
+  width: 150px;
+  border: 6px solid transparent;
+  border-width: 7px 7px 10px 8px;
+  border-image: -moz-linear-gradient(
+      top,
+      #999 0%,
+      #d99eaa 45%,
+      #d99eaa 55%,
+      #ccc 95%,
+      #ddd 100%
+    )
+    49%;
+  border-image: -webkit-linear-gradient(
+      top,
+      #999 0%,
+      #d99eaa 45%,
+      #d99eaa 55%,
+      #ccc 95%,
+      #ddd 100%
+    )
+    49%;
+  box-shadow: 3px -5px 6px rgba(100, 100, 100, 0.6),
+    -4px -4px 6px rgba(100, 100, 100, 0.4),
+    4px -2px 5px rgba(100, 100, 100, 0.5);
+  box-sizing: border-box;
+  cursor: pointer;
+  top: 500px;
+  transition: transform 0.1s, font-size 0.1s;
+}
+#rotateButton:active {
+transform: translateY(1px); 
+  font-size: 1px smaller;
+  background: -moz-linear-gradient(
+    left,
+    #eda8b7 0%,
+    #f5c4ce 30px,
+    #f5d3d9 50px,
+    #f5d7dd 100%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    #eda8b7 0%,
+    #f5c4ce 30px,
+    #f5d3d9 50px,
+    #f5d7dd 100%
+  );
+  box-shadow: 1px -3px 6px rgba(100, 100, 100, 0.6),
+    -3px -3px 6px rgba(100, 100, 100, 0.3),
+    4px -2px 6px rgba(100, 100, 100, 0.3);
+}
+.carousel__face {
+  background-color: green;
+}
+.carousel__face:nth-child(1) { transform: rotateY(0deg) translateZ(500px); }
+.carousel__face:nth-child(2) { transform: rotateY(36deg) translateZ(500px); }
+.carousel__face:nth-child(3) { transform: rotateY(72deg) translateZ(500px); }
+.carousel__face:nth-child(4) { transform: rotateY(108deg) translateZ(500px); }
+.carousel__face:nth-child(5) { transform: rotateY(144deg) translateZ(500px); }
+.carousel__face:nth-child(6) { transform: rotateY(180deg) translateZ(500px); }
+.carousel__face:nth-child(7) { transform: rotateY(216deg) translateZ(500px); }
+.carousel__face:nth-child(8) { transform: rotateY(252deg) translateZ(500px); }
+.carousel__face:nth-child(9) { transform: rotateY(288deg) translateZ(500px); }
+.carousel__face:nth-child(10) { transform: rotateY(324deg) translateZ(500px); }
+ 
+  #plotly_map, #museum_head_img, #museum_head_txt, .carousel, .carousel__face  {
+        position: absolute;
+  }
+  #museum_head_img, #museum_head_txt, #plotly_map, #up_button, #down_button {
+    z-index: 999;
+}
+  #clouds, #rotateButton, .model-viewer-wrapper, .container {
+  position: relative;
+  }
+    #plotly_map {
+      right: -1vw;
+      top: -30px;
+      overflow: hidden;
+      width:30vw;
+    }
+    .full_screen {
+        height: 100vh;
+        width: 100%;
+    }
+    ::-webkit-scrollbar-thumb {
+  background: rgba(25, 25, 255, 0.3);
+  border-radius: 20px;
+}
+::-webkit-scrollbar-track {
+  background: linear-gradient(white, #d1fac5);
+}
+::-webkit-scrollbar {
+  width: 20px;
+}
+#museum_head_img {
+padding-left: 5vw;
+padding-top: 7vh; 
+}
+#museum_head_txt {
+    padding-left: 36vw;
+    color: #545454;
+    font-size: 3vh;
+    padding-top: 15vh;
+    text-align: justify;
+    max-width: 30vw;
+    line-height: 1.5;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+#museum_head_img, #museum_head_txt {
+max-height:50vh; 
+max-width:30vw;
+float: left;
+}
+.el_appear {
+    height: 60%;
+}
+#clouds {
+            z-index: 0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="full_screen">
+            <div class="el_appear">
+    <div id="carousel_and_models">
+<div class="container">
+  <div class="carousel">
+    <div class="carousel__face" id="carousel__face_1"><span><h3>The largest collection of butterflies</h3><p>The pride of the Zoological Museum is the world-famous collection of daytime butterflies, which includes about half a million specimens. It is based on the collection of the famous Ukrainian zoologist Lev Sheliuzhko, which he and his father donated to the museum.</p><p>Birds make up another significant part of the exposition. From the world's smallest hummingbirds to the most widespread pigeons on the planet.</p></span></div>
+    <div class="carousel__face" id="carousel__face_2"><span><h3>Huge exposition of birds</h3><p>Birds. They spread plant seeds, helping forests regenerate. Many birds eat insects, which regulates their numbers. Birds of prey control populations of small animals. And the list goes on and on.</p><p>You can see almost all the birds of Ukraine and a significant number of world birds in this collection.</p>
+   </span></div>
+    <div class="carousel__face" id="carousel__face_3"><span><h3>Birds of the Red Book</h3><p>Animals on the verge of extinction deserve special attention. The evolutionary struggle, climate change, and the detrimental impact of human activity on nature can all be traced in the these halls.</p><p>The museum has examples of rare and sometimes extinct species. They are not only about birds.</p></span></div>
+    <div class="carousel__face" id="carousel__face_4"><span><h3>The diversity of the World Ocean</h3><p>Water covers more than 70% of the world's surface. At the same time, about 80% of all species on Earth live in the oceans. This includes species that have achieved biological immortality and those that have not changed for hundreds of millions of years.</p><p>The life story we know begins here.</p></span></div>
+    <div class="carousel__face" id="carousel__face_5"><span><h3>Fish</h3><p>Freshwater and marine. Predatory and peaceful. Pelagic and benthic. All these species complement the ecosystem of our planet and demonstrate how much diversity of life is hidden in even the smallest bodies of water.</p><p>The aquatic ecosystem is a complex and fragile mechanism, and each inhabitant of this aquatic world plays a unique role.</p></span></div>
+    <div class="carousel__face" id="carousel__face_6"><span><h3>The largest among contemporaries</h3><p>The skeleton of a huge whale, the fin whale, is a unique decoration of the museum. In addition to it, there are Indian elephant, polar bear, giant kangaroo and many others.</p><p>Look into the eyes of fearsome predators and lift your head to see giant herbivores.</p></span></div>
+    <div class="carousel__face" id="carousel__face_7"><span><h3>Impressive taxidermy work</h3><p>Each species represented is the result of the meticulous work of the taxidermist who created the stuffed animal. From enormous trophy heads to tiny butterfly chrysalises, all of these were made over half a century and more ago.</p><p>These creations have been carefully preserved by generations of museum staff until now.</p></span></div>
+    <div class="carousel__face" id="carousel__face_8"><span><h3>Mammal diversity</h3><p>Each mammal species has its own unique characteristics that allow it to survive in its environment. By studying the world of mammals, we understand better how the world around us works. We learn about the amazing adaptations that allow animals to survive in different conditions.</p><p>This is how we understand how important it is to preserve nature and protect all its inhabitants.</p></span></div>
+    <div class="carousel__face" id="carousel__face_9"><span><h3>Animals of different continents</h3><p>North and South America, Eurasia, Africa, Oceania and even Antarctica.</p><p>Animals from all over the world are gathered in several halls and presented to you in the palm of a hand.</p></span></div>
+    <div class="carousel__face" id="carousel__face_10"><span><h3>Come and visit us!</h3><p>These and many other exhibits are waiting for you!</p><p>Here, in the Red Building of TSNUK, one of the oldest museums in Ukraine, professionals with many years of experience will reveal the impressive biodiversity of our world.</p><p>To register for the tour, please call (044) 239-32-77.</p></span></div>
+  </div>
+    <div id="rotateButton" style="color: #a19295; text-align: center; font-family: Arial;"><h2>Next →</h2></div>
+    <span id="rotationCountDisplay" style="color: black">0</span>
+</div>
+</div>
+  <script>
+        function createModelViewer(idPrefix, start, end) {
+            const carousel = document.querySelector('.container');
+            for (let i = start; i <= end; i++) {
+                let div = document.createElement("div");
+                div.className = "model-viewer-wrapper";
+                div.id = idPrefix + i;
+                for (let j = 1; j <= 5; j++) {
+                    let modelViewer = document.createElement("model-viewer");
+                    modelViewer.id = "model-viewer" + ((i - 1) * 5 + j);
+                    modelViewer.setAttribute("src", "https://gitknu.github.io/0/models/" + ((i - 1) * 5 + j) + ".glb");
+                    modelViewer.setAttribute("interpolationDecay", "7500");
+                    modelViewer.style.display = "inline-block";
+                    div.appendChild(modelViewer);
+                }
+                carousel.appendChild(div);
+            }
+        }
+        createModelViewer("model-viewer-wrapper_", 1, 10);
+    </script>
+</div>
+<script>
+  const carousel = document.querySelector('.carousel');
+  const rotateButton = document.getElementById('rotateButton');
+  const rotationCountDisplay = document.getElementById('rotationCountDisplay');
+  const carouselFace1 = document.getElementById('carousel__face_1');
+  const carouselFace2 = document.getElementById('carousel__face_2');
+  const carouselFace3 = document.getElementById('carousel__face_3');
+  const carouselFace4 = document.getElementById('carousel__face_4');
+  const carouselFace5 = document.getElementById('carousel__face_5');
+  const carouselFace6 = document.getElementById('carousel__face_6');
+  const carouselFace7 = document.getElementById('carousel__face_7');
+  const carouselFace8 = document.getElementById('carousel__face_8');
+  const carouselFace9 = document.getElementById('carousel__face_9');
+  const carouselFace10 = document.getElementById('carousel__face_10');
+  const modelViewerWr1 = document.getElementById('model-viewer-wrapper_1');
+  const modelViewerWr2 = document.getElementById('model-viewer-wrapper_2');
+  const modelViewerWr3 = document.getElementById('model-viewer-wrapper_3');
+  const modelViewerWr4 = document.getElementById('model-viewer-wrapper_4');
+  const modelViewerWr5 = document.getElementById('model-viewer-wrapper_5');
+  const modelViewerWr6 = document.getElementById('model-viewer-wrapper_6');
+  const modelViewerWr7 = document.getElementById('model-viewer-wrapper_7');
+  const modelViewerWr8 = document.getElementById('model-viewer-wrapper_8');
+  const modelViewerWr9 = document.getElementById('model-viewer-wrapper_9');
+  const modelViewerWr10 = document.getElementById('model-viewer-wrapper_10');
+  let rotationAngle = 0;
+  let rotationCount = 1;
+  let rotationInterval;
+  function rotateCarousel() {
+      
+      const handleOpacityTransition = (wrapperId) => {
+            const modelViewerWrapper = document.getElementById(wrapperId);
+            modelViewerWrapper.style.opacity = '0';
+            setTimeout(() => {
+                modelViewerWrapper.style.transition = 'opacity 1.55s ease';
+                modelViewerWrapper.style.opacity = '1';
+            }, 2000);
+        };
+        handleOpacityTransition('model-viewer-wrapper_1');
+        handleOpacityTransition('model-viewer-wrapper_2');
+        handleOpacityTransition('model-viewer-wrapper_3');
+        handleOpacityTransition('model-viewer-wrapper_4');
+        handleOpacityTransition('model-viewer-wrapper_5');
+        handleOpacityTransition('model-viewer-wrapper_6');
+        handleOpacityTransition('model-viewer-wrapper_7');
+        handleOpacityTransition('model-viewer-wrapper_8');
+        handleOpacityTransition('model-viewer-wrapper_9');
+        handleOpacityTransition('model-viewer-wrapper_10');
+        
+    rotationAngle -= 36;
+    carousel.style.transform = `rotateY(${rotationAngle}deg)`;
+    if (rotationAngle % 360 === 0 && Number.isInteger(rotationAngle / 360)) {
+      rotationCount = 0; 
+    }
+    rotationCount++;
+    rotationCountDisplay.textContent = `${rotationCount}`;
+    if (rotationCount === 1) {
+      carouselFace1.style.transition = 'opacity 0.75s ease';
+      carouselFace1.style.opacity = 1;
+      carouselFace2.style.transition = 'opacity 0.75s ease';
+      carouselFace2.style.opacity = 0.4;
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.transition = 'opacity 0.75s ease';
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.transition = 'opacity 0.75s ease';
+      carouselFace10.style.opacity = 0.4;
+      modelViewerWr1.style.display = "block";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 2) {
+      carouselFace1.style.transition = 'opacity 0.75s ease';
+      carouselFace1.style.opacity = 0.4;
+      carouselFace2.style.transition = 'opacity 0.75s ease';
+      carouselFace2.style.opacity = 1;
+      carouselFace3.style.transition = 'opacity 0.75s ease';
+      carouselFace3.style.opacity = 0.4;
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.transition = 'opacity 0.75s ease';
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "block";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 3) {
+      carouselFace1.style.transition = 'opacity 0.75s ease';
+      carouselFace1.style.opacity = 0;
+      carouselFace2.style.transition = 'opacity 0.75s ease';
+      carouselFace2.style.opacity = 0.4;
+      carouselFace3.style.transition = 'opacity 0.75s ease';
+      carouselFace3.style.opacity = 1;
+      carouselFace4.style.transition = 'opacity 0.75s ease';
+      carouselFace4.style.opacity = 0.4;
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "block";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 4) {
+      carouselFace1.style.opacity = 0;
+      carouselFace1.style.transition = 'opacity 0.75s ease';
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.transition = 'opacity 0.75s ease';
+      carouselFace3.style.opacity = 0.4;
+      carouselFace4.style.transition = 'opacity 0.75s ease';
+      carouselFace4.style.opacity = 1;
+      carouselFace5.style.transition = 'opacity 0.75s ease';
+      carouselFace5.style.opacity = 0.4;
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "block";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 5) {
+      carouselFace1.style.opacity = 0;
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.transition = 'opacity 0.75s ease';
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.transition = 'opacity 0.75s ease';
+      carouselFace4.style.opacity = 0.4;
+      carouselFace5.style.transition = 'opacity 0.75s ease';
+      carouselFace5.style.opacity = 1;
+      carouselFace6.style.transition = 'opacity 0.75s ease';
+      carouselFace6.style.opacity = 0.4;
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "block";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 6) {
+      carouselFace1.style.opacity = 0;
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.transition = 'opacity 0.75s ease';
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.transition = 'opacity 0.75s ease';
+      carouselFace5.style.opacity = 0.4;
+      carouselFace6.style.transition = 'opacity 0.75s ease';
+      carouselFace6.style.opacity = 1;
+      carouselFace7.style.transition = 'opacity 0.75s ease';
+      carouselFace7.style.opacity = 0.4;
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "block";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 7) {
+      carouselFace1.style.opacity = 0;
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.transition = 'opacity 0.75s ease';
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.transition = 'opacity 0.75s ease';
+      carouselFace6.style.opacity = 0.4;
+      carouselFace7.style.transition = 'opacity 0.75s ease';
+      carouselFace7.style.opacity = 1;
+      carouselFace8.style.transition = 'opacity 0.75s ease';
+      carouselFace8.style.opacity = 0.4;
+      carouselFace9.style.opacity = 0;
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "block";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 8) {
+      carouselFace1.style.opacity = 0;
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.transition = 'opacity 0.75s ease';
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.transition = 'opacity 0.75s ease';
+      carouselFace7.style.opacity = 0.4;
+      carouselFace8.style.transition = 'opacity 0.75s ease';
+      carouselFace8.style.opacity = 1;
+      carouselFace9.style.transition = 'opacity 0.75s ease';
+      carouselFace9.style.opacity = 0.4;
+      carouselFace10.style.opacity = 0;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "block";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 9) {
+      carouselFace1.style.opacity = 0;
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.transition = 'opacity 0.75s ease';
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.transition = 'opacity 0.75s ease';
+      carouselFace8.style.opacity = 0.4;
+      carouselFace9.style.transition = 'opacity 0.75s ease';
+      carouselFace9.style.opacity = 1;
+      carouselFace10.style.transition = 'opacity 0.75s ease';
+      carouselFace10.style.opacity = 0.4;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "block";
+      modelViewerWr10.style.display = "none";
+    } else if (rotationCount === 10) {
+      carouselFace1.style.transition = 'opacity 0.75s ease';
+      carouselFace1.style.opacity = 0.4;
+      carouselFace2.style.opacity = 0;
+      carouselFace3.style.opacity = 0;
+      carouselFace4.style.opacity = 0;
+      carouselFace5.style.opacity = 0;
+      carouselFace6.style.opacity = 0;
+      carouselFace7.style.opacity = 0;
+      carouselFace8.style.transition = 'opacity 0.75s ease';
+      carouselFace8.style.opacity = 0;
+      carouselFace9.style.transition = 'opacity 0.75s ease';
+      carouselFace9.style.opacity = 0.4;
+      carouselFace10.style.transition = 'opacity 0.75s ease';
+      carouselFace10.style.opacity = 1;
+      modelViewerWr1.style.display = "none";
+      modelViewerWr2.style.display = "none";
+      modelViewerWr3.style.display = "none";
+      modelViewerWr4.style.display = "none";
+      modelViewerWr5.style.display = "none";
+      modelViewerWr6.style.display = "none";
+      modelViewerWr7.style.display = "none";
+      modelViewerWr8.style.display = "none";
+      modelViewerWr9.style.display = "none";
+      modelViewerWr10.style.display = "block";
+    } 
+  }
+  function startRotation() {
+    rotationInterval = setInterval(rotateCarousel, 30000);
+  }
+  function stopRotation() {
+    clearInterval(rotationInterval);
+  }
+  function startOrResetRotationTimer() {
+    clearTimeout(startOrResetRotationTimer.timer);
+    startOrResetRotationTimer.timer = setTimeout(startRotation, 60000);
+  }
+let isButtonDisabled = false;
+rotateButton.addEventListener('click', () => {
+    if (!isButtonDisabled) {
+        stopRotation();
+        rotateCarousel();
+        startOrResetRotationTimer();
+        const handleOpacityTransition = (wrapperId) => {
+            const modelViewerWrapper = document.getElementById(wrapperId);
+            modelViewerWrapper.style.opacity = '0';
+            setTimeout(() => {
+                modelViewerWrapper.style.transition = 'opacity 1.55s ease';
+                modelViewerWrapper.style.opacity = '1';
+            }, 2000);
+        };
+        handleOpacityTransition('model-viewer-wrapper_1');
+        handleOpacityTransition('model-viewer-wrapper_2');
+        handleOpacityTransition('model-viewer-wrapper_3');
+        handleOpacityTransition('model-viewer-wrapper_4');
+        handleOpacityTransition('model-viewer-wrapper_5');
+        handleOpacityTransition('model-viewer-wrapper_6');
+        handleOpacityTransition('model-viewer-wrapper_7');
+        handleOpacityTransition('model-viewer-wrapper_8');
+        handleOpacityTransition('model-viewer-wrapper_9');
+        handleOpacityTransition('model-viewer-wrapper_10');
+        isButtonDisabled = true;
+        setTimeout(() => {
+            isButtonDisabled = false;
+        }, 3500);
+    }
+});
+carousel.addEventListener('click', startOrResetRotationTimer);
+let rotationAllowed = true;
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight' && rotationAllowed) {
+        stopRotation();
+        rotateCarousel();
+        startOrResetRotationTimer();
+        const handleOpacityTransition = (wrapperId) => {
+            const modelViewerWrapper = document.getElementById(wrapperId);
+            modelViewerWrapper.style.opacity = '0';
+            setTimeout(() => {
+                modelViewerWrapper.style.transition = 'opacity 1.55s ease';
+                modelViewerWrapper.style.opacity = '1';
+            }, 2000);
+        };
+        handleOpacityTransition('model-viewer-wrapper_1');
+        handleOpacityTransition('model-viewer-wrapper_2');
+        handleOpacityTransition('model-viewer-wrapper_3');
+        handleOpacityTransition('model-viewer-wrapper_4');
+        handleOpacityTransition('model-viewer-wrapper_5');
+        handleOpacityTransition('model-viewer-wrapper_6');
+        handleOpacityTransition('model-viewer-wrapper_7');
+        handleOpacityTransition('model-viewer-wrapper_8');
+        handleOpacityTransition('model-viewer-wrapper_9');
+        handleOpacityTransition('model-viewer-wrapper_10');
+        rotationAllowed = false;
+        setTimeout(() => {
+            rotationAllowed = true;
+        }, 3500); 
+    }
+});
+  startRotation();
+</script>
+<script>
+(() => {
+    const modelViewers = Array.from({ length: 50 }, (_, i) => document.getElementById(`model-viewer${i + 1}`));
+    let isDragging = false;
+    let startX, startY;
+    function startDrag(event) {
+        isDragging = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        clearInterval(orbitInterval);
+    }
+    function drag(event) {
+        if (!isDragging) return;
+        const sensitivity = 0.2;
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        for (const modelViewer of modelViewers) {
+            const orbit = modelViewer.cameraOrbit;
+            const [yaw, pitch, radius] = orbit.split(' ');
+            const newYaw = parseFloat(yaw) + deltaX * sensitivity;
+            const newPitch = parseFloat(pitch) - deltaY * sensitivity;
+            modelViewer.cameraOrbit = `${newYaw}deg ${newPitch}deg ${radius}`;
+        }
+        startX = event.clientX;
+        startY = event.clientY;
+    }
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mousedown', startDrag);
+    document.addEventListener('mouseup', endDrag);
+})();
+</script>
+</div>
+<script>
+var s = 5, p = 0;
+window.addEventListener('scroll', function(e) {
+    var a = window.pageYOffset || document.documentElement.scrollTop,
+        h = window.innerHeight,
+        c = document.querySelectorAll('.el_appear');
+    c.forEach(function(e) {
+        var r = e.getBoundingClientRect(),
+            t = r.top,
+            b = r.bottom;
+        if (t < h && b > 0.3 * h) {
+            e.style = 'opacity:1;transition:opacity 0.4s ease-in-out, transform 0.4s ease-in-out;transform:translateX(0)';
+        } else if (a > p + s) {
+            e.style = 'opacity:0;transition:opacity 0.4s ease-in-out, transform 0.4s ease-in-out;transform:translateX(50px)';
+        } else if (a < p - s) {
+            e.style = 'opacity:1;transition:opacity 0.4s ease-in-out, transform 0.4s ease-in-out;transform:translateX(0)';
+        }
+    }), p = a;
+});
+
+const museumHeadTxt = document.getElementById('museum_head_txt');
+const museumHeadImg = document.getElementById('museum_head_img');
+if (museumHeadTxt.clientHeight > museumHeadImg.clientHeight) {
+  museumHeadTxt.style.fontSize = '2.5vh';
+} 
+</script>
+</body>
+</html>
